@@ -1,0 +1,5 @@
+dashboard/node_modules
+node_modules
+
+dashboard/pnpm-lock.yaml
+pnpm-lock.yaml
