@@ -4,8 +4,7 @@ import { z } from "zod";
 
 // User Model
 export const leaderboard = sqliteTable("leaderboard", {
-    guildId: text("guild_id").primaryKey(),
-    id: text("id").notNull().default("undefined"),
+    id: text("id").primaryKey(),
     username: text("name").notNull().default("undefined"),
     level: integer("level").notNull().default(1),
     xp: integer("xp").notNull().default(0),
@@ -15,8 +14,7 @@ export const leaderboard = sqliteTable("leaderboard", {
 });
 
 export const boostersUsers = sqliteTable("boosters_users", {
-    guildId: text("guild_id").primaryKey(),
-    id: text("id").notNull().default("undefined"),
+    id: text("id").primaryKey(),
     username: text("name").notNull().default("undefined"),
     since: integer("since"),
 });
@@ -37,8 +35,7 @@ export const botCommands = sqliteTable("bot_commands", {
 });
 
 export const settings = sqliteTable("settings", {
-    guildId: text("guild_id").primaryKey(),
-    id: text("id").notNull().default("undefined"),
+    id: text("id").primaryKey(),
     joinRoleEnabled: text("joinrole_enabled").notNull().default("false"),
     invitesEnabled: text("invites_enabled").notNull().default("true"),
     reactionRoleEnabled: text("reactionrole_enabled")
@@ -111,13 +108,11 @@ export const insertLeaderboardSchema = createInsertSchema(leaderboard).pick({
     colorClass: true,
 });
 
-export const insertBoostersUsersSchema = createInsertSchema(boostersUsers).pick(
-    {
-        id: true,
-        username: true,
-        since: true,
-    }
-);
+export const insertBoostersUsersSchema = createInsertSchema(boostersUsers).pick({
+    id: true,
+    username: true,
+    since: true,
+});
 
 export const insertAfkUsersSchema = createInsertSchema(afkUsers).pick({
     id: true,

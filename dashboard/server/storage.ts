@@ -15,6 +15,7 @@ import {
     type InsertActivity,
     type InsertServerStats,
     Stats,
+    InsertStats,
 } from "@shared/schema";
 
 export interface IStorage {
@@ -35,7 +36,7 @@ export interface IStorage {
         data: { [key in keyof InsertLeaderboard]: InsertLeaderboard[key] }
     ): Leaderboard | undefined;
     deleteLeaderboardUser(id: string): boolean;
-    resetLeaderboard(): void;
+    resetLeaderboard(id: string): void;
     getLeaderboard(id: string): Leaderboard[];
     // Bot Commands
     getBotCommandsUsed(): BotCommands[];
@@ -57,7 +58,7 @@ export interface IStorage {
     getServerStats(): ServerStats[];
     updateStats(
         id: string,
-        data: { [key in keyof InsertServerStats]: InsertServerStats[key] }
+        data: { [key in keyof InsertStats]: InsertStats[key] }
     ): Stats | undefined;
     getStats(): Stats[];
     getRecentActivities(): Activity[];
@@ -154,7 +155,9 @@ export class MemStorage implements IStorage {
      * @returns A promise that resolves when the user is deleted. */
     public deleteAFK(id: string): boolean {
         const initialLength = this.afkUsers.length;
-        this.afkUsers = this.afkUsers.filter((user) => user.id !== id);
+        this.afkUsers = this.afkUsers.filter(
+            (user) => user.id.split(":")[0] !== id
+        );
 
         if (initialLength > this.afkUsers.length) return true;
 
@@ -213,7 +216,12 @@ export class MemStorage implements IStorage {
         // Add the user to the leaderboard
         if (this.leaderboard.find((user) => user.id === id)) {
             // Update the existing user
-            this.updateLeaderboardUser(id, newUser);
+            this.updateLeaderboardUser(
+                id,
+                newUser as {
+                    [key in keyof InsertLeaderboard]: InsertLeaderboard[key];
+                }
+            );
         } else {
             this.leaderboard.push(newUser);
         }
@@ -293,15 +301,17 @@ export class MemStorage implements IStorage {
     /**
      * Resets the leaderboard back to an empty array
      * @returns A promise that resolves when the leaderboard is reset */
-    public resetLeaderboard(): void {
-        this.leaderboard = [];
+    public resetLeaderboard(id: string): void {
+        this.leaderboard = this.leaderboard.filter(
+            (user) => user.id.split(":")[0] !== id
+        );
     }
 
     /**
      * Returns the current leaderboard as an array of `Leaderboard` objects
      * @returns The current leaderboard */
     public getLeaderboard(id: string): Leaderboard[] {
-        return this.leaderboard.filter((user) => user.id !== id);
+        return this.leaderboard.filter((user) => user.id.split(":")[0] !== id);
     }
 
     private recalculateRanks(): void {
@@ -396,7 +406,7 @@ export class MemStorage implements IStorage {
      * @returns The updated server stats, or undefined if the server is not found */
     public updateStats(
         id: string,
-        data: { [key in keyof InsertServerStats]: InsertServerStats[key] }
+        data: { [key in keyof InsertStats]: InsertStats[key] }
     ): Stats | undefined {
         const index = this.stats.findIndex((server) => server.id === id);
         if (index === -1) return undefined;
@@ -421,12 +431,20 @@ export class MemStorage implements IStorage {
     }
 
     /**
+     * Retrieves a specific server stat by ID.
+     * @param id The ID of the server stat to retrieve
+     * @returns The server stat with the specified ID, or throws an error if not found */
+    public getSpecificStats(id: string): Stats {
+        return this.serverStats.find((server) => server.id === id)!;
+    }
+
+    /**
      * Adds a server to the list of server stats, and adds a new activity to the list of activities
      * @param server The server to add to the list of server stats
      * @returns The server that was added to the list of server stats
      * @private */
     private addServerStats(server: InsertServerStats) {
-        this.stats.push(server);
+        this.serverStats.push(server);
 
         const activityId = this.currentActivityId++;
         const activity = {
@@ -450,7 +468,7 @@ export class MemStorage implements IStorage {
         id: string,
         data: { [key in keyof InsertServerStats]: InsertServerStats[key] }
     ): ServerStats {
-        const index = this.stats.findIndex((server) => server.id === id);
+        const index = this.serverStats.findIndex((server) => server.id === id);
         if (index === -1) {
             this.addServerStats(data as InsertServerStats);
 
@@ -473,7 +491,7 @@ export class MemStorage implements IStorage {
      * Retrieves the list of server stats
      * @returns An array of `ServerStats` objects, where each object represents the stats of a server */
     public getServerStats(): ServerStats[] {
-        return this.stats;
+        return this.serverStats;
     }
 
     /**
@@ -481,7 +499,7 @@ export class MemStorage implements IStorage {
      * @param id The ID of the activity to update
      * @param data The new activity data. Must contain the same properties as the `InsertActivity` type.
      * @returns The updated activity, or undefined if the activity is not found */
-    public updateCustomActivity(id: string, data: InsertActivity) {
+    public updateCustomActivity(data: InsertActivity) {
         const activityId = this.currentActivityId++;
         const activity = {
             ...data,
