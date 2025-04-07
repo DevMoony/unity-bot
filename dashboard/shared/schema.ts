@@ -4,7 +4,8 @@ import { z } from "zod";
 
 // User Model
 export const leaderboard = sqliteTable("leaderboard", {
-    id: text("id").primaryKey(),
+    guildId: text("guild_id").primaryKey(),
+    id: text("id").notNull().default("undefined"),
     username: text("name").notNull().default("undefined"),
     level: integer("level").notNull().default(1),
     xp: integer("xp").notNull().default(0),
@@ -14,7 +15,8 @@ export const leaderboard = sqliteTable("leaderboard", {
 });
 
 export const boostersUsers = sqliteTable("boosters_users", {
-    id: text("id").primaryKey(),
+    guildId: text("guild_id").primaryKey(),
+    id: text("id").notNull().default("undefined"),
     username: text("name").notNull().default("undefined"),
     since: integer("since"),
 });
@@ -31,40 +33,64 @@ export const botCommands = sqliteTable("bot_commands", {
     name: text("name").notNull().default("undefined"),
     description: text("description").notNull().default("undefined"),
     category: text("category").notNull().default("undefined"),
+    used: integer("used").notNull().default(1),
 });
 
 export const settings = sqliteTable("settings", {
-    id: text("id").primaryKey(),
+    guildId: text("guild_id").primaryKey(),
+    id: text("id").notNull().default("undefined"),
     joinRoleEnabled: text("joinrole_enabled").notNull().default("false"),
     invitesEnabled: text("invites_enabled").notNull().default("true"),
-    reactionRoleEnabled: text("reactionrole_enabled").notNull().default("false"),
+    reactionRoleEnabled: text("reactionrole_enabled")
+        .notNull()
+        .default("false"),
     ticketEnabled: text("ticket_enabled").notNull().default("false"),
     automodEnabled: text("automod_enabled").notNull().default("false"),
     // Channels
     joinChannel: text("join_channel").notNull().default("undefined"),
     leaveChannel: text("leave_channel").notNull().default("undefined"),
-    autoReactionSystemChannel: text("auto_reaction_system_channel").notNull().default("undefined"),
+    autoReactionSystemChannel: text("auto_reaction_system_channel")
+        .notNull()
+        .default("undefined"),
     reportLogChannel: text("report_log_channel").notNull().default("undefined"),
-    reviewSendChannel: text("review_log_channel").notNull().default("undefined"),
-    suggestionSendChannel: text("suggestion_log_channel").notNull().default("undefined"),
+    reviewSendChannel: text("review_log_channel")
+        .notNull()
+        .default("undefined"),
+    suggestionSendChannel: text("suggestion_log_channel")
+        .notNull()
+        .default("undefined"),
     ticketForumChannel: text("ticket_channel").notNull().default("undefined"),
     giveawayChannel: text("giveaway_channel").notNull().default("undefined"),
     pollChannel: text("poll_channel").notNull().default("undefined"),
     // For transcripts as well
     ticketLogChannel: text("ticket_log_channel").notNull().default("undefined"),
     automodLogChannel: text("automod_channel").notNull().default("undefined"),
-    punishmentLogChannel: text("punishment_log_channel").notNull().default("undefined"),
-    // 
-    reactionRoleMessageId: text("reactionrole_message_id").notNull().default("undefined"),
-    starboardMessageId: text("starboard_message_id").notNull().default("undefined"),
+    punishmentLogChannel: text("punishment_log_channel")
+        .notNull()
+        .default("undefined"),
+    //
+    reactionRoleMessageId: text("reactionrole_message_id")
+        .notNull()
+        .default("undefined"),
+    starboardMessageId: text("starboard_message_id")
+        .notNull()
+        .default("undefined"),
 });
 
 export const activity = sqliteTable("activity", {
     id: text("id").primaryKey(),
     type: text("type").notNull().default("undefined"),
-    username: text("action").notNull().default("undefined"),
-    note: text("target").notNull().default("undefined"),
+    username: text("username").notNull().default("undefined"),
+    action: text("action").notNull().default("undefined"),
+    note: text("note").notNull().default("undefined"),
+    target: text("target").notNull().default("undefined"),
     timestamp: text("timestamp").notNull().default("undefined"),
+});
+
+export const stats = sqliteTable("stats", {
+    id: text("id").primaryKey(),
+    name: text("name").notNull().default("undefined"),
+    value: integer("value").notNull().default(0),
 });
 
 export const serverStats = sqliteTable("server_stats", {
@@ -82,14 +108,16 @@ export const insertLeaderboardSchema = createInsertSchema(leaderboard).pick({
     xp: true,
     xpNeeded: true,
     rank: true,
-    colorClass: true
+    colorClass: true,
 });
 
-export const insertBoostersUsersSchema = createInsertSchema(boostersUsers).pick({
-    id: true,
-    username: true,
-    since: true,
-});
+export const insertBoostersUsersSchema = createInsertSchema(boostersUsers).pick(
+    {
+        id: true,
+        username: true,
+        since: true,
+    }
+);
 
 export const insertAfkUsersSchema = createInsertSchema(afkUsers).pick({
     id: true,
@@ -103,6 +131,7 @@ export const insertBotCommandsSchema = createInsertSchema(botCommands).pick({
     name: true,
     description: true,
     category: true,
+    used: true,
 });
 
 export const insertSettingsSchema = createInsertSchema(settings).pick({
@@ -126,17 +155,24 @@ export const insertSettingsSchema = createInsertSchema(settings).pick({
     ticketLogChannel: true,
     automodLogChannel: true,
     punishmentLogChannel: true,
-    // 
+    //
     reactionRoleMessageId: true,
-    starboardMessageId: true
+    starboardMessageId: true,
 });
 
 export const insertActivitySchema = createInsertSchema(activity).pick({
     id: true,
     type: true,
     username: true,
-    note: true,
+    action: true,
+    target: true,
     timestamp: true,
+});
+
+export const insertStats = createInsertSchema(stats).pick({
+    id: true,
+    name: true,
+    value: true,
 });
 
 export const insertServerStatsSchema = createInsertSchema(serverStats).pick({
@@ -167,3 +203,6 @@ export type InsertActivity = typeof activity.$inferSelect;
 
 export type ServerStats = z.infer<typeof insertServerStatsSchema>;
 export type InsertServerStats = typeof serverStats.$inferSelect;
+
+export type InsertStats = typeof stats.$inferSelect;
+export type Stats = z.infer<typeof insertStats>;
