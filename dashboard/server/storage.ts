@@ -449,9 +449,9 @@ export class MemStorage implements IStorage {
         const activityId = this.currentActivityId++;
         const activity = {
             id: activityId.toString(),
-            type: "server-joined",
+            type: "server-stat-added",
             username: server.name,
-            note: `${server.name} joined the server`,
+            note: `joined the server`,
             timestamp: "just now",
         };
         this.activities.unshift(activity);

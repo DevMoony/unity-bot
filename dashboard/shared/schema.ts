@@ -17,6 +17,9 @@ export const boostersUsers = sqliteTable("boosters_users", {
     id: text("id").primaryKey(),
     username: text("name").notNull().default("undefined"),
     since: integer("since"),
+    avater: text("avatar").notNull().default("undefined"),
+    tier: integer("tier").notNull().default(1),
+    perks: text("perks").notNull().default("[]"),
 });
 
 export const afkUsers = sqliteTable("afk_users", {
@@ -32,6 +35,7 @@ export const botCommands = sqliteTable("bot_commands", {
     description: text("description").notNull().default("undefined"),
     category: text("category").notNull().default("undefined"),
     used: integer("used").notNull().default(1),
+    examples: text("examples").notNull().default("[]"),
 });
 
 export const settings = sqliteTable("settings", {
@@ -112,6 +116,9 @@ export const insertBoostersUsersSchema = createInsertSchema(boostersUsers).pick(
     id: true,
     username: true,
     since: true,
+    avater: true,
+    tier: true,
+    perks: true,
 });
 
 export const insertAfkUsersSchema = createInsertSchema(afkUsers).pick({
@@ -127,6 +134,7 @@ export const insertBotCommandsSchema = createInsertSchema(botCommands).pick({
     description: true,
     category: true,
     used: true,
+    examples: true
 });
 
 export const insertSettingsSchema = createInsertSchema(settings).pick({

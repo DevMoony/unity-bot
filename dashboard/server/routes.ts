@@ -233,6 +233,7 @@ export function registerRoutes(app: Express): Server {
                 id: `${guildId}:${userId}`,
                 username: req.body.username,
                 since: Date.now(),
+                ...req.body.data,
             });
             res.status(201).json(newUser);
         } catch (err) {
