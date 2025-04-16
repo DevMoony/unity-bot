@@ -42,6 +42,7 @@ export interface BotCommands {
     category: string;
     used: number;
     examples: string[];
+    usage: string;
 }
 
 export type ActivityType = 
