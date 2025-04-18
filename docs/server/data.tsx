@@ -6,6 +6,7 @@ type Command = {
     description: string;
     usage: string;
     examples: string[];
+    sub_commands?: string[];
     arguments?: string[];
 };
 
@@ -36,7 +37,17 @@ const commands: Command[] = [
             "/afk remove",
             "/afk change-reason Gonna sleep",
         ],
+        sub_commands: [
+            "set — Set your AFK status in the server.",
+            "check — Check your or someone else's AFK status in the server.",
+            "remove — Remove your AFK status from the server.",
+            "change-reason — Change the reason for your AFK status in the server.",
+        ],
+        arguments: ["Reason — The reason for your AFK status."],
     },
+    {
+        
+    }
 ];
 
 const features: Feature[] = [
@@ -53,7 +64,9 @@ const features: Feature[] = [
                     useful for the community.
                 </p>
                 <ul className="list-disc list-inside text-[#B9BBBE] space-y-2 mb-3">
-                    <li>Check certain information about the server or a user.</li>
+                    <li>
+                        Check certain information about the server or a user.
+                    </li>
                 </ul>
             </div>
         ),

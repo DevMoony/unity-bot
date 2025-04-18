@@ -1,18 +1,15 @@
 {
     "include": [
-        "docs/client/src/**/*",
-        "docs/shared/**/*",
-        "docs/server/**/*"
+        "client/src/**/*",
+        "shared/**/*",
+        "server/**/*"
     ],
     "exclude": [
-        "docs/node_modules",
-        "docs/build",
-        "docs/dist",
-        "docs/**/*.test.ts",
-        "dashboard/node_modules",
-        "dashboard/build",
-        "dashboard/dist",
-        "dashboard/**/*.test.ts"
+        "node_modules",
+        "build",
+        "dist",
+        "**/*.test.ts",
+        "node_modules"
     ],
     "compilerOptions": {
         "incremental": true,
