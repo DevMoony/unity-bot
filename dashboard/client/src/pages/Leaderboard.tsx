@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { LeaderboardUser } from "@/types";
+import { Leaderboard } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -13,7 +13,7 @@ import { Trophy, Award, Star } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Leaderboard = () => {
-    const { data: users, isLoading } = useQuery<LeaderboardUser[]>({
+    const { data: users, isLoading } = useQuery<Leaderboard[]>({
         queryKey: ["/api/leaderboard"],
     });
 

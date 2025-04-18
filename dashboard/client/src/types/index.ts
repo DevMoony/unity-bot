@@ -9,6 +9,7 @@ export interface Stat {
 export interface Leaderboard {
     id: string;
     username: string;
+    avatar?: string;
     level: number;
     xp: number;
     xpNeeded: number;
