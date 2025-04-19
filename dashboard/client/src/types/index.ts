@@ -9,6 +9,7 @@ export interface Stat {
 export interface Leaderboard {
     id: string;
     username: string;
+    avatar?: string;
     level: number;
     xp: number;
     xpNeeded: number;
@@ -20,6 +21,7 @@ export interface Leaderboard {
 export interface Booster {
     id: string;
     username: string;
+    colorClass: string;
     since: number;
     avatar?: string;
     tier: number;
