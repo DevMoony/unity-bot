@@ -2,4 +2,4 @@
 export {
     useSidebar,
     SidebarProvider,
-} from "../components/context/SidebarContext";
+} from "@/components/context/SidebarContext";
