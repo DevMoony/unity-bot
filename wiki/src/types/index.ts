@@ -1,7 +1,7 @@
 export interface Command {
     name: string;
     permission: "Admin Only" | "Mod Only" | "Everyone";
-    permissionColor: string;
+    permissionColor: "discord-green" | "discord-dark-aqua" | "discord-red";
     description: string;
     usage: string;
     arguments?: {

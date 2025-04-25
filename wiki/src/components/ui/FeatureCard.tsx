@@ -35,12 +35,12 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ feature }) => {
         
         {feature.subFeatures && (
           <div className="mb-4">
-            <h5 className="font-medium mb-2 text-white">Included Sub-Features</h5>
+            <h5 className="font-medium mb-2 text-white">Included Sub-Features (Defaults)</h5>
             <div className="bg-[#202225] rounded-md p-3">
               <div className="space-y-3">
                 {feature.subFeatures.map((subFeature, index) => (
                   <div key={index} className="flex items-center">
-                    <div className={`w-2 h-2 rounded-full ${subFeature.enabled ? 'bg-[#57F287]' : 'bg-gray-500'} mr-2`}></div>
+                    <div className={`w-2 h-2 rounded-full ${subFeature.defaults_enabled ? 'bg-[#57F287]' : 'bg-gray-500'} mr-2`}></div>
                     <span className="text-sm">{subFeature.name}</span>
                   </div>
                 ))}
