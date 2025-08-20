@@ -63,7 +63,18 @@ const MiscCommands: Command[] = [
     },
 ];
 
-const ModCommands: Command[] = [];
+const ModCommands: Command[] = [
+    {
+        category: "Moderation",
+        name: "punishments",
+        description: "View the punishments of a member.",
+        usage: ["/punishments <User>"],
+        examples: ["/punishments @Moony"],
+        arguments: ["User — The user to check the punishments of."],
+        permission: "Mod Only",
+        permissionColor: "discord-green",
+    }
+];
 
 const AdminCommands: Command[] = [];
 
@@ -87,7 +98,7 @@ const features: Feature[] = [
         preview: (
             <div className="bg-[#202225] rounded-md p-4">
                 <p className="text-[#B9BBBE] mb-3">
-                    The fun feature is a collection of commands that are fun.
+                    The fun feature is a collection of commands that are fun to use.
                 </p>
                 <ul className="list-disc list-inside text-[#B9BBBE] space-y-2 mb-3">
                     <li>Play a game with the bot or play a game with another user.</li>

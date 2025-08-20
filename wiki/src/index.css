@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 227.1 57.8% 65.1%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 60.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 227.1 57.8% 65.1%;
+
+    --radius: 0.5rem;
+
+    /* Discord colors */
+    --discord-blurple: 227.1 57.8% 65.1%;
+    --discord-fullBlurple: 235 85.6% 64.7%;
+    --discord-green: 143 76.9% 61.8%;
+    --discord-yellow: 49 93.5% 67.6%;
+    --discord-red: 358 68.8% 59.8%;
+    --discord-darkBg: 220 7.7% 23.5%;
+    --discord-darkerBg: 213 6.5% 20.4%;
+    --discord-sidebar: 220 7.9% 13.7%;
+    --discord-lightText: 210 11.1% 73.5%;
+    --discord-darkText: 220 6.5% 46.3%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-[#36393F] text-foreground;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  pre {
+    @apply bg-[#2b2d31] rounded-md p-4 overflow-x-auto;
+  }
+
+  pre code {
+    @apply text-[#e3e5e8] font-mono;
+  }
+
+  .code-comment { color: #939aa3; }
+  .code-keyword { color: #c678dd; }
+  .code-string { color: #98c379; }
+  .code-property { color: #e06c75; }
+  .code-function { color: #61afef; }
+  .code-number { color: #d19a66; }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-[#202225];
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#4e5058] rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#5865F2];
+  }
+}
